@@ -1,4 +1,4 @@
-package com.jin.cmp.gg;
+package com.jin.leet;
 
 import java.util.Arrays;
 import java.util.LinkedList;

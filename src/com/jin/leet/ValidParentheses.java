@@ -1,8 +1,6 @@
-package com.jin.cmp.gg;
+package com.jin.leet;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
 import java.util.Stack;
 
 /**
