@@ -27,11 +27,27 @@ package com.jin.leet;
  * @see com.jin.cmp.gg.MinimumPointInCurve
  */
 public class FindPeakElement {
-    public int findPeakElement(int[] nums) {
+    public static int findPeakElement(int[] nums) {
+        return findPeakUtil(nums, 0, nums.length-1);
+    }
 
+    private static int findPeakUtil(int[] num, int start, int end) {
+        if (start == end) {
+            return start;
+        }
+
+        int mid = (start+end)/2;
+        if (num[mid]>num[mid+1]) {
+            return findPeakUtil(num, start, mid);
+        } else {
+            return findPeakUtil(num, mid + 1, end);
+        }
     }
 
     public static void main(String args[]) {
-
+        int[] nums = new int[]{1,2,3,1};
+        System.out.println("Peak of 1,2,3,1 : " + findPeakElement(nums));
+        nums = new int[]{1,2,1,3,5,6,4};
+        System.out.println("Peak of 1,2,1,3,5,6,4 : " + findPeakElement(nums));
     }
 }
