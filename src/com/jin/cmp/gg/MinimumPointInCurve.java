@@ -2,6 +2,11 @@ package com.jin.cmp.gg;
 
 /**
  *  有一个曲线，曲线的形状是先递减再增加，找曲线的最低点，如果只考虑int怎么做，如果考虑double怎么做
+ *
+ *  Answer: int就是二分，double的搜索空间变成无限了，所以函数必须要给定一个delta，结果返回的是一个区间，区间长度是2*delta，
+ *  里面需要包含最低点就可以了，其实也是二分法就搞定了
+ *
+ *  https://leetcode.com/problems/find-peak-element/solution/
  */
 public class MinimumPointInCurve {
     public static int findLowestPoint(int[] curve) {
