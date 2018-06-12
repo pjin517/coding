@@ -6,7 +6,6 @@ import java.util.PriorityQueue;
 
 /**
  * 设计股票价格的记录系统。只观察一支股票的价格，实现几个function：
- * 以下内容需要积分高于 100 才可浏览
  *
  * void update(double price, int timestamp)
  * 更新/修正/删除股票价格，其中timestamp大部分时间是递增的，但是有时候发现过去的记录有错误，
@@ -81,13 +80,13 @@ public class StockPriceHistoryStore {
     PriorityQueue<PriceNode> minQueue = new PriorityQueue<>(100, new Comparator<PriceNode>() {
         @Override
         public int compare(PriceNode o1, PriceNode o2) {
-            return (int) (o1.price - o2.price)*100;
+            return (int) ((o1.price - o2.price)*100);
         }
     });
     PriorityQueue<PriceNode> maxQueue = new PriorityQueue<>(100, new Comparator<PriceNode>() {
         @Override
         public int compare(PriceNode o1, PriceNode o2) {
-            return (int) (o2.price - o1.price)*100;
+            return (int) ((o2.price - o1.price)*100);
         }
     });
 
@@ -144,9 +143,6 @@ public class StockPriceHistoryStore {
         System.out.println("Current price: " + this.current());
         System.out.println("=======================================================");
     }
-
-    //TODO: Problems
-    // Min and Max heap has bug
 
 
     public static void main(String[] args) {
