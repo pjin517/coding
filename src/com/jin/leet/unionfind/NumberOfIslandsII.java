@@ -59,7 +59,7 @@ public class NumberOfIslandsII {
         for (int[] position: positions) {
             int x = position[0];
             int y = position[1];
-            islandUnionFind.grid[x][y] = 1;
+            islandUnionFind.grid[x][y] = '1';
 
             boolean noAdjacent = true;
             //check left
