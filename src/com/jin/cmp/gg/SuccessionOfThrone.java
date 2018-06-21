@@ -1,7 +1,5 @@
 package com.jin.cmp.gg;
 
-import com.sun.deploy.net.proxy.pac.PACFunctions;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
