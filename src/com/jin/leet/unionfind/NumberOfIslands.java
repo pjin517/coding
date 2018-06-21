@@ -151,17 +151,19 @@ class IslandUnionFind {
         return islands[x][y];
     }
 
-    public void union(Location a, Location b) {
+    public Location union(Location a, Location b) {
         Location islandA = find(a.x, a.y);
         Location islandB = find(b.x, b.y);
         if (islandA.equals(islandB))
-            return;
+            return islandA;
         if (ranks[islandA.x][islandA.y] >= ranks[islandB.x][islandB.y]) {
             islands[islandB.x][islandB.y] = islandA;
             ranks[islandA.x][islandA.y] += ranks[islandB.x][islandB.y];
+            return  islandA;
         } else {
             islands[islandA.x][islandA.y] = islandB;
             ranks[islandB.x][islandB.y] += ranks[islandA.x][islandA.y];
+            return islandB;
         }
     }
 }
