@@ -1,5 +1,7 @@
 package com.jin.cmp.gg;
 
+import java.util.PriorityQueue;
+
 /**
  *给一个长板凳，上面坐了人是1， 没坐人是0，（list of 0 and 1)
  * 求新来的人坐在什么地方可以与其他人的距离最远 （返回坐下位置的index）。
@@ -13,8 +15,8 @@ package com.jin.cmp.gg;
  *http://www.1point3acres.com/bbs/thread-425238-3-1.html
  *
  */
-public class BenchSitting {
-    private static int[] findFirstEmptySequence(int start, int[] bench) {
+class BenchSittingUtil {
+    public static int[] findFirstEmptySequence(int start, int[] bench) {
         while(start < bench.length && bench[start] == 1) {
             start ++;
         }
@@ -57,10 +59,92 @@ public class BenchSitting {
         return maxIndex;
     }
 
+//    public static void main(String args[]) {
+//        System.out.println("index for {1, 0, 0, 0, 1}: " + getPosition(new int[]{1, 0, 0, 0, 1}));
+//        System.out.println("index for {1, 0, 1, 0, 1}: " + getPosition(new int[]{1, 0, 1, 0, 1}));
+//        System.out.println("index for {0, 0, 0, 1, 0, 1}: " + getPosition(new int[]{0, 0, 0, 1, 0, 1}));
+//        System.out.println("index for {1, 0, 1, 0, 1, 0, 0, 0}: " + getPosition(new int[]{1, 0, 1, 0, 1, 0, 0, 0}));
+//    }
+}
+
+class EmptySequence implements Comparable{
+    int start;
+    int end;
+    int distance;
+    int midIndex;
+
+    public EmptySequence(int start, int end, int benchLength) {
+        this.start = start;
+        this.end = end;
+        if (start == 0) {
+            this.distance = end + 1;
+            this.midIndex = 0;
+        }
+        else if (end == benchLength-1) {
+            this.distance = end - start + 1;
+            this.midIndex = end;
+        }
+        else {
+            this.distance = (end - start + 1) / 2;
+            this.midIndex = start + this.distance;
+        }
+
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return  ((EmptySequence)o).distance - this.distance;
+    }
+}
+
+public class BenchSitting {
+    int[] bench;
+    PriorityQueue<EmptySequence> sequences;
+
+    public BenchSitting(int[] bench) {
+        this.bench = bench;
+        this.sequences = new PriorityQueue<>();
+
+        // Store all empty sequences into priority queue
+        int start = 0;
+        while (start < bench.length) {
+            int[] emptySequence = BenchSittingUtil.findFirstEmptySequence(start, bench);
+            if (emptySequence.length == 0)
+                break;
+            sequences.offer(new EmptySequence(emptySequence[0], emptySequence[1], bench.length));
+            start = emptySequence[1] + 1;
+        }
+    }
+
+    public int getNextPosition() {
+        EmptySequence sequence = sequences.poll();
+        if (sequence == null)
+            return -1;
+
+        if (sequence.midIndex == 0) {
+            if (sequence.end>0) {
+                sequences.offer(new EmptySequence(1, sequence.end, bench.length));
+            }
+        } else if (sequence.end == bench.length-1) {
+            if (sequence.start < bench.length-1) {
+                sequences.offer(new EmptySequence(sequence.start, sequence.end - 1, bench.length));
+            }
+        } else {
+            if (sequence.start<sequence.midIndex)
+                sequences.offer(new EmptySequence(sequence.start, sequence.midIndex-1, bench.length));
+            if (sequence.end>sequence.midIndex)
+                sequences.offer(new EmptySequence(sequence.midIndex+1, sequence.midIndex, bench.length));
+        }
+        return sequence.midIndex;
+    }
+
     public static void main(String args[]) {
-        System.out.println("index for {1, 0, 0, 0, 1}: " + getPosition(new int[]{1, 0, 0, 0, 1}));
-        System.out.println("index for {1, 0, 1, 0, 1}: " + getPosition(new int[]{1, 0, 1, 0, 1}));
-        System.out.println("index for {0, 0, 0, 1, 0, 1}: " + getPosition(new int[]{0, 0, 0, 1, 0, 1}));
-        System.out.println("index for {1, 0, 1, 0, 1, 0, 0, 0}: " + getPosition(new int[]{1, 0, 1, 0, 1, 0, 0, 0}));
+        BenchSitting benchSitting = new BenchSitting(new int[]{1, 0, 1, 0, 1, 0, 0, 0});
+        int index = benchSitting.getNextPosition();
+        while (index != -1) {
+            System.out.println("Next index: " + index);
+            index = benchSitting.getNextPosition();
+        }
+
     }
 }
