@@ -14,16 +14,53 @@ package com.jin.cmp.gg;
  *
  */
 public class BenchSitting {
+    private static int[] findFirstEmptySequence(int start, int[] bench) {
+        while(start < bench.length && bench[start] == 1) {
+            start ++;
+        }
+        if (start >= bench.length)
+            return new int[]{};
+        int end = start;
+        while (end < bench.length && bench[end] == 0) {
+            end++;
+        }
+        end = end -1;
+        return new int[]{start, end};
+    }
 
     public static int getPosition(int[] bench) {
-        int length = bench.length;
-        for (int i=0; i< length; i++) {
+        int start = 0;
+        int maxDistance = -1;
+        int maxIndex = -1;
+        while (start < bench.length) {
 
+            int[] emptySequence = findFirstEmptySequence(start, bench);
+            if (emptySequence.length == 0)
+                break;
 
+            int distance;
+            if (emptySequence[0] == 0 || emptySequence[1] == bench.length-1)
+                distance = emptySequence[1] - emptySequence[0];
+            else
+                distance = (emptySequence[1] - emptySequence[0])/2;
+            if (distance > maxDistance) {
+                maxDistance = distance;
+                if (emptySequence[0] == 0)
+                    maxIndex = 0;
+                else if (emptySequence[1] == bench.length - 1)
+                    maxIndex = bench.length - 1;
+                else
+                    maxIndex = emptySequence[0] + maxDistance;
+            }
+            start = emptySequence[1] + 1;
         }
+        return maxIndex;
     }
 
     public static void main(String args[]) {
-
+        System.out.println("index for {1, 0, 0, 0, 1}: " + getPosition(new int[]{1, 0, 0, 0, 1}));
+        System.out.println("index for {1, 0, 1, 0, 1}: " + getPosition(new int[]{1, 0, 1, 0, 1}));
+        System.out.println("index for {0, 0, 0, 1, 0, 1}: " + getPosition(new int[]{0, 0, 0, 1, 0, 1}));
+        System.out.println("index for {1, 0, 1, 0, 1, 0, 0, 0}: " + getPosition(new int[]{1, 0, 1, 0, 1, 0, 0, 0}));
     }
 }

@@ -4,24 +4,41 @@ import java.util.HashSet;
 import java.util.Set;
 
 /*
+http://www.1point3acres.com/bbs/thread-289514-1-1.html
 http://www.1point3acres.com/bbs/thread-345555-1-1.html
 
-Robot Cleaner
 Given a robot cleaner in a room modeled as a grid. Each cell in the grid can be empty or blocked.
-The robot cleaner can move forward, turn left or turn right. When it tries to move into a blocked
-cell, its bumper sensor detects the obstacle and it stays on the current cell.
+The robot cleaner can move forward, turn left or turn right. When it tries to move into a blocked cell,
+its bumper sensor detects the obstacle and it stays on the current cell.
+
 The control API:
-Interface Robot {
-  //returns true if next cell is open and robot moves into the cell.
-  //returns false if next cell is obstacle and robot stays on the current cell.
-  boolean Move();
-  //Robot will stay on the same cell after calling Turn*. k indicates how
-  //many turns to perform.
-  void TurnLeft(int k);
-  void TurnRight(int k);
-  //Clean the current cell.
-  void Clean();more.
+
+interface Robot {
+  // returns true if next cell is open and robot moves into the cell.
+  // returns false if next cell is obstacle and robot stays on the current cell.
+  boolean Move();
+
+  // Robot will stay on the same cell after calling Turn*. k indicates how
+  // many turns to perform.
+  void TurnLeft(int k);
+  void TurnRight(int k);
+
+  // Clean the current cell.
+  void Clean();
+
+  boolean Move(Direction d);
 }
+
+sample input
+++++++++++
++........+
++...^....+
++.+......+
+++++.+++++
++.....+
++++++++
+
+===================================================================================================================================
 
 TODO: not correct
  */
