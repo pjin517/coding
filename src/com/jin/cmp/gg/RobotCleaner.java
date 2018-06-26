@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /*
+http://www.1point3acres.com/bbs/thread-345555-1-1.html
+
 Robot Cleaner
 Given a robot cleaner in a room modeled as a grid. Each cell in the grid can be empty or blocked.
 The robot cleaner can move forward, turn left or turn right. When it tries to move into a blocked
@@ -21,6 +23,7 @@ Interface Robot {
   void Clean();more.
 }
 
+TODO: not correct
  */
 interface Robot{
     //returns true if next cell is open and robot moves into the cell.
@@ -79,7 +82,7 @@ public class RobotCleaner implements Robot {
 
     @Override
     public void Clean() {
-        System.out.println("cleaned " + currentCoordination.x + " " + currentCoordination.y);
+        System.out.println("cleaned [" + currentCoordination.x + " " + currentCoordination.y + "]");
         return;
     }
 
