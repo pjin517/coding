@@ -49,6 +49,10 @@ public class MergeKSortedList {
         return result;
     }
 
+    public int[] mergeKArrays(int[][] arrays) {
+        //TODO:
+    }
+
 }
 
 class ListNode {
