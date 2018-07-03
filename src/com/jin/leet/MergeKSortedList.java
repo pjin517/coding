@@ -51,6 +51,7 @@ public class MergeKSortedList {
 
     public int[] mergeKArrays(int[][] arrays) {
         //TODO:
+        return null;
     }
 
 }
