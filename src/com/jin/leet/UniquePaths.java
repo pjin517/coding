@@ -30,11 +30,23 @@ package com.jin.leet;
  *
  */
 public class UniquePaths {
-    public int uniquePaths(int m, int n) {
-
+    public static int uniquePaths(int m, int n) {
+        int[][] cache = new int[m][n];
+        cache[0][0] = 1;
+        return uniquePathUtil(m-1, n-1, cache);
     }
 
+    private static int uniquePathUtil(int x, int y, int[][] cache) {
+        if (x<0 || y<0)
+            return 0;
+        if (cache[x][y] != 0)
+            return cache[x][y];
+        int result = uniquePathUtil(x-1, y, cache) + uniquePathUtil(x, y-1, cache);
+        cache[x][y] = result;
+        return result;
+    }
     public static void main(String args[]) {
-
+        System.out.println("m=3, n=2: " + uniquePaths(3, 2));
+        System.out.println("m=7, n=3: " + uniquePaths(7, 3));
     }
 }

@@ -31,8 +31,29 @@ package com.jin.leet;
  * 2. Down -> Down -> Right -> Right
  */
 public class UniquePaths2 {
+    public static int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        int[][] cache = new int[m][n];
+        cache[0][0] = 1;
+        return uniquePathWithObstaclesUtil(m-1, n-1, cache, obstacleGrid);
+    }
 
+    private static int uniquePathWithObstaclesUtil(int x, int y, int[][] cache, int[][] obstacleGrid) {
+        if (x<0 || y<0 || obstacleGrid[x][y] == 1)
+            return 0;
+        if (cache[x][y] != 0)
+            return cache[x][y];
+        int result = uniquePathWithObstaclesUtil(x-1, y, cache, obstacleGrid) + uniquePathWithObstaclesUtil(x, y-1, cache, obstacleGrid);
+        cache[x][y] = result;
+        return result;
+    }
     public static void main(String args[]) {
-
+        int[][] obstacle = new int[][] {
+                {0, 0, 0},
+                {0, 1, 0},
+                {0, 0, 0}
+        };
+        System.out.println("m=3, n=2: " + UniquePaths2.uniquePathsWithObstacles(obstacle));
     }
 }
