@@ -139,10 +139,7 @@ public class NumberToWords {
         if (hundred>0) {
             sb.append(digitMap.get(hundred) + " Hundred");
         }
-        if (ten == 0) {
-            if (one!=0)
-                sb.append(" and");
-        } else if (ten>0) {
+        if (ten>0) {
             if (sb.length()>0)
                 sb.append(" ");
             if (ten==1)
