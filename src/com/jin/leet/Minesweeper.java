@@ -1,5 +1,8 @@
 package com.jin.leet;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * Let's play the minesweeper game (Wikipedia, online game)!
  *
@@ -60,7 +63,90 @@ package com.jin.leet;
  *
  */
 public class Minesweeper {
-    public char[][] updateBoard(char[][] board, int[] click) {
+    private final int[][] adj = {
+            {-1, -1}, {-1, 0}, {-1, 1},
+            {0, -1}, {0, 1},
+            {1, -1}, {1, 0}, {1, 1}
+    };
 
+    public char[][] updateBoard(char[][] board, int[] click) {
+        int x = click[0];
+        int y = click[1];
+
+        if (board[x][y] == 'M') {
+            board[x][y] = 'X';
+            return board;
+        }
+
+        if (board[x][y] == 'E') {
+            // if adj has mines, show number
+            int mines = checkAdj(board, x, y);
+            if (mines > 0) {
+                board[x][y] = (char) ('0' + mines);
+                return board;
+            } else {
+                // adj has no mine, change it to 'B' and reveal all adj
+                Queue<Position> queue = new LinkedList<>();
+                queue.offer(new Position(x, y));
+                revealBoard(board, queue);
+            }
+        }
+
+        // no action if others are clicked
+        return board;
+
+    }
+
+    private int checkAdj(char[][] board, int x, int y) {
+        int mines=0;
+        for (int[] p: adj) {
+            int m = x + p[0];
+            int n = y + p[1];
+            if (m<0 || n<0 || m>=board.length || n>=board[0].length)
+                continue;
+            if (board[m][n] == 'M')
+                mines++;
+        }
+        return mines;
+    }
+    private void revealBoard(char[][] board, Queue<Position> queue) {
+        while (!queue.isEmpty()){
+            Position pos = queue.poll();
+            int mines = checkAdj(board, pos.x, pos.y);
+            if (board[pos.x][pos.y] == 'E') {
+                // if all adj positions are E, set it to 'B', add all
+                if ( mines == 0) {
+                    board[pos.x][pos.y] = 'B';
+                    for (int[] p : adj) {
+                        int m = pos.x + p[0];
+                        int n = pos.y + p[1];
+                        if (m < 0 || n < 0 || m >= board.length || n >= board[0].length)
+                            continue;
+                        queue.offer(new Position(m, n));
+                    }
+                } else {
+                    board[pos.x][pos.y] = (char) ('0' + mines);
+                }
+            }
+            if (board[pos.x][pos.y] == 'M') {
+                mines++;
+                board[pos.x][pos.y] = (char) ('0' + mines);
+            }
+        }
+    }
+
+    class Position {
+        int x;
+        int y;
+
+        public Position() {
+            x = -1;
+            y = -1;
+        }
+
+        public Position(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 }
