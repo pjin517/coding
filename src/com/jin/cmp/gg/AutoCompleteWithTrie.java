@@ -105,12 +105,12 @@ class Trie {
             ptr = ptr.children[idx];
         }
 
-        result = getAlChildWords(ptr);
+        result = getAllChildWords(ptr);
 
         return result;
     }
 
-    private List<String> getAlChildWords(TrieNode node) {
+    private List<String> getAllChildWords(TrieNode node) {
         LinkedList<String> result = new LinkedList<>();
         LinkedList<TrieNode> queue = new LinkedList<>();
         if (node == null)
