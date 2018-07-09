@@ -38,7 +38,71 @@ package com.jin.leet;
  * The size of the BST will not exceed 50.
  * The BST is always valid and each node's value is different.
  *
- * http://bookshadow.com/weblog/2018/02/04/leetcode-split-bst/
+ * TODO: submit
+ *
+ * Another iterative solution:
+ * https://www.cnblogs.com/wxisme/p/8427770.html
  */
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
 public class SplitBST {
+    public TreeNode[] splitBST(TreeNode root, int V) {
+        if (root == null)
+            return new TreeNode[]{null, null};
+        if (root.val == V) {
+            TreeNode node = root.right;
+            root.right = null;
+            return new TreeNode[]{root, node};
+        }
+        // find node with value V and it's parent
+        TreeNode[] nodes = bstSearch(null, root, V);
+        TreeNode parent = nodes[0];
+        TreeNode node = nodes[1];
+        if (node == parent.left) {
+            parent.left = node.right;
+            return new TreeNode[]{node, root};
+        } else {
+            parent.right = node.left;
+            return new TreeNode[]{root, node};
+        }
+
+    }
+
+    private TreeNode[] bstSearch(TreeNode parent, TreeNode node, int v) {
+        if (node.val == v)
+            return new TreeNode[]{parent, node};
+        if (node.val > v) {
+            return bstSearch(node, node.right, v);
+        } else {
+            return bstSearch(node, node.left, v);
+        }
+    }
+
+    private void bstInsert(TreeNode root, TreeNode node) {
+        int v = node.val;
+        if (v < root.val) {
+            if (root.left==null) {
+                root.left = node;
+                return;
+            } else {
+                bstInsert(root.left, node);
+            }
+        } else {
+            if (root.right==null) {
+                root.right = node;
+                return;
+            } else {
+                bstInsert(root.right, node);
+            }
+        }
+    }
 }
