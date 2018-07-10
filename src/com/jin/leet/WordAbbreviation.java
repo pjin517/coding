@@ -1,6 +1,6 @@
 package com.jin.leet;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * LeetCode527. Word Abbreviation
@@ -29,6 +29,50 @@ import java.util.List;
  */
 public class WordAbbreviation {
     public List<String> wordsAbbreviation(List<String> dict) {
+        List<String> origDict = dict;
+        HashMap<String, String> abbr2word = new HashMap<>();
+        HashMap<String, String> word2abbr = new HashMap<>();
+        List<String> conflicts;
+        int level = 1;
+        while (!dict.isEmpty()) {
+            conflicts = new LinkedList<>();
+            for (String word : dict) {
+                String abbr = getAbbrevation(word, level);
+                if (abbr2word.containsKey(abbr)) {
+                    conflicts.add(word);
+                    conflicts.add(abbr2word.get(abbr));
+                    abbr2word.remove(abbr);
+                    word2abbr.remove(abbr2word.get(abbr));
+                } else {
+                    abbr2word.put(abbr, word);
+                    word2abbr.put(word, abbr);
+                }
+            }
+            level++;
+            dict = conflicts;
+        }
+        List<String> result = new LinkedList<>();
+        for (String w: origDict)
+            result.add(word2abbr.get(w));
+        return result;
+    }
 
+    private String getAbbrevation(String word, int prefixLen) {
+        if (word.length()<=3)
+            return word;
+        if (prefixLen + 2 >= word.length())
+            return word;
+        char[] wordChars = word.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        sb.append(Arrays.copyOfRange(wordChars, 0, prefixLen));
+        sb.append(word.length()-prefixLen-1);
+        sb.append(wordChars[word.length()-1]);
+        return sb.toString();
+    }
+
+    public static void main(String[] argv) {
+        WordAbbreviation wordAbbreviation = new WordAbbreviation();
+        List<String> dict =  Arrays.asList("like", "god", "internal", "me", "internet", "interval", "intension", "face", "intrusion");
+        System.out.println(wordAbbreviation.wordsAbbreviation(dict));
     }
 }
