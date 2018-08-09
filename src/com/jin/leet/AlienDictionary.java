@@ -41,10 +41,35 @@ public class AlienDictionary {
         return graph.topoSort();
     }
 
-    public static void main(String[] args) {
-        AlienDictionary ad = new AlienDictionary();
+    public List<String> allAlienOrder(String[] words) {
+        CharGraph graph = new CharGraph();
+        for (int i=0; i<words.length-1; i++) {
+            char[] w1 = words[i].toCharArray();
+            char[] w2 = words[i+1].toCharArray();
+            int j = 0;
+            while (j<w1.length && j<w2.length) {
+                if (w1[j] == w2[j])
+                    j++;
+                else
+                    break;
+            }
+            graph.addEdge(w1[j], w2[j]);
+        }
+        List<String> result = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
+        graph.allTopoSort(sb, result);
+        return result;
+    }
 
-         System.out.print(ad.alienOrder(new String[] {"wrt", "wrf", "er", "ett", "rftt"}));
+    public static void main(String[] args) {
+        AlienDictionary ad1 = new AlienDictionary();
+        System.out.println(ad1.alienOrder(new String[] {"wrt", "wrf", "er", "ett", "rftt"}));
+
+        AlienDictionary ad = new AlienDictionary();
+        System.out.println("+++++++++++++++++++all:");
+        for (String s: ad.allAlienOrder(new String[] {"a1", "ab", "b1", "b2"})) {
+            System.out.println(s);
+        }
     }
 }
 
@@ -79,6 +104,9 @@ class CharGraph {
             if (indegree.get(v) == 0)
                 roots.add(v);
         }
+        if (roots.isEmpty())
+            return "";
+
         while (!roots.isEmpty()) {
             char v = roots.poll();
             result.append(v);
@@ -90,5 +118,35 @@ class CharGraph {
             }
         }
         return result.toString();
+    }
+
+    public void allTopoSort(StringBuilder sb, List<String> result) {
+        if (indegree.keySet().isEmpty()) {
+            result.add(sb.toString());
+            return;
+        }
+
+        LinkedList<Character> roots = new LinkedList<>();
+        for (char v: indegree.keySet()) {
+            if (indegree.get(v) == 0)
+                roots.add(v);
+        }
+
+        for (char v: roots) {
+            sb.append(v);
+            List<Character> nodes = adj.get(v);
+            for (char c: nodes) {
+                indegree.put(c, indegree.get(c) - 1);
+            }
+            adj.remove(v);
+            indegree.remove(v);
+            allTopoSort(sb, result);
+            sb.deleteCharAt(sb.length()-1);
+            adj.put(v, nodes);
+            indegree.put(v, 0);
+            for (char c: nodes) {
+                indegree.put(c, indegree.get(c) + 1);
+            }
+        }
     }
 }
