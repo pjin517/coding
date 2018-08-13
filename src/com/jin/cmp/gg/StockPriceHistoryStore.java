@@ -24,6 +24,10 @@ import java.util.PriorityQueue;
  *
  */
 
+/**
+ * Another way to get O(1) getMin, getMax is to store current min/max value in each node
+ */
+
 class PriceNode {
     long timestamp;
     double price;
