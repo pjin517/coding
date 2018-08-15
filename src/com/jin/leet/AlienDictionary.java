@@ -21,22 +21,34 @@ import java.util.List;
  *
  * Note: You may assume all letters are in lowercase. If the order is invalid, return an empty string. There may be multiple valid order of letters, return any one of them is fine.
  *
- * TODO: submit
  */
 public class AlienDictionary {
     public String alienOrder(String[] words) {
+        if (words.length == 1)
+            return words[0];
         CharGraph graph = new CharGraph();
         for (int i=0; i<words.length-1; i++) {
             char[] w1 = words[i].toCharArray();
             char[] w2 = words[i+1].toCharArray();
+
+            for (char c: w1)
+                graph.addNode(c);
+
+            for (char c: w2)
+                graph.addNode(c);
+
+            if (words[i].equals(words[i+1]))
+                continue;
+
             int j = 0;
             while (j<w1.length && j<w2.length) {
                 if (w1[j] == w2[j])
                     j++;
-                else
+                else {
+                    graph.addEdge(w1[j], w2[j]);
                     break;
+                }
             }
-            graph.addEdge(w1[j], w2[j]);
         }
         return graph.topoSort();
     }
@@ -63,13 +75,15 @@ public class AlienDictionary {
 
     public static void main(String[] args) {
         AlienDictionary ad1 = new AlienDictionary();
-        System.out.println(ad1.alienOrder(new String[] {"wrt", "wrf", "er", "ett", "rftt"}));
+        AlienDictionary ad2 = new AlienDictionary();
+        System.out.println(ad1.alienOrder(new String[] {"z", "z"}));
+        System.out.println(ad2.alienOrder(new String[] {"wrt", "wrf",  "er", "ett", "rftt"}));
 
-        AlienDictionary ad = new AlienDictionary();
-        System.out.println("+++++++++++++++++++all:");
-        for (String s: ad.allAlienOrder(new String[] {"a1", "ab", "b1", "b2"})) {
-            System.out.println(s);
-        }
+//        AlienDictionary ad = new AlienDictionary();
+//        System.out.println("+++++++++++++++++++all:");
+//        for (String s: ad.allAlienOrder(new String[] {"a1", "ab", "b1", "b2"})) {
+//            System.out.println(s);
+//        }
     }
 }
 
@@ -97,6 +111,13 @@ class CharGraph {
         indegree.put(v, indegree.get(v)+1);
     }
 
+    public void addNode(char u) {
+        if (!adj.containsKey(u))
+            adj.put(u, new LinkedList<>());
+        if (!indegree.containsKey(u))
+            indegree.put(u, 0);
+    }
+
     public String topoSort() {
         StringBuilder result = new StringBuilder();
         LinkedList<Character> roots = new LinkedList<>();
@@ -117,6 +138,9 @@ class CharGraph {
                     roots.add(c);
             }
         }
+
+        if (result.length()!=indegree.size())
+            return "";
         return result.toString();
     }
 
