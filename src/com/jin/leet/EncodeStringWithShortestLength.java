@@ -41,6 +41,6 @@ package com.jin.leet;
  */
 public class EncodeStringWithShortestLength {
     public String encode(String s) {
-
+        return null;
     }
 }
