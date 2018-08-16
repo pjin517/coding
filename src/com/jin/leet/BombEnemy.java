@@ -19,7 +19,7 @@ package com.jin.leet;
  */
 public class BombEnemy {
     public int maxKilledEnemies(char[][] grid) {
-
+        return -1;
     }
 
 }
