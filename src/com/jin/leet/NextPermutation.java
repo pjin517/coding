@@ -23,7 +23,7 @@ public class NextPermutation {
             if (nums[k]<nums[k+1])
                 break;
         }
-        if (k == -1) {          // whole array is sorted ascendingly
+        if (k == -1) {          // whole array is sorted descending
             reverse(nums, 0, nums.length - 1);
             return;
         }
