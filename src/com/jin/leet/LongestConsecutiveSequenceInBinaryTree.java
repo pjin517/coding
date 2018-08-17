@@ -38,31 +38,32 @@ package com.jin.leet;
  */
 
 public class LongestConsecutiveSequenceInBinaryTree {
+    int max = 0;
     public int longestConsecutive(TreeNode root) {
-        int[] max = new int[] {0};
-        dfs(root, root.val, max);
-        return max[0];
+        if (root == null) return 0;
+        dfs(root, root.val, 0);
+        return max;
     }
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(1);
-        root.right = new TreeNode(3);
-        root.right.left = new TreeNode(2);
-        root.right.right = new TreeNode(4);
-        root.right.right.right = new TreeNode(5);
+        root.right = new TreeNode(2);
+        root.left = new TreeNode(2);
         LongestConsecutiveSequenceInBinaryTree lcsbt = new LongestConsecutiveSequenceInBinaryTree();
         System.out.println(lcsbt.longestConsecutive(root));
     }
 
-    private void dfs(TreeNode node, int parentValue, int[] max) {
-        if (node == null)
+    private void dfs(TreeNode node, int parentValue, int length) {
+        if (node == null) {
             return;
-        if ( node.val == parentValue+1) {
-            max[0]= max[0]+1;
-        } else {
-            max[0] = Math.max(1, max[0]);
         }
-        dfs(node.left, node.val, max);
-        dfs(node.right, node.val, max);
+        if ( node.val == parentValue+1) {
+            length++;
+        } else {
+            length = 1;
+        }
+        this.max = Math.max(this.max, length);
+        dfs(node.left, node.val, length);
+        dfs(node.right, node.val, length);
     }
 }
