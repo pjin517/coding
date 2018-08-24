@@ -7,6 +7,8 @@ import java.util.HashMap;
  * 设计一个dictionary，存key和value，value有time stamp，可能会expire，如果expire了返回空，
  * follow up是怎么有效删除过期的key value pair
  *
+ * Hint: https://gist.github.com/pcan/16faf4e59942678377e0
+ *
  * @param <K>
  * @param <V>
  */
